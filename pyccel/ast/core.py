@@ -924,6 +924,10 @@ class While(ScopedNode):
         test condition given as an expression
     body : list of Pyccel objects
         list of statements representing the body of the While statement.
+    local_vars : list of Variables
+        list of Variables created inside the While
+    scope : Scope
+        The scope for the loop
 
     Examples
     --------
@@ -936,7 +940,7 @@ class While(ScopedNode):
     __slots__ = ('_body','_test','_local_vars')
     _attribute_nodes = ('_body','_test','_local_vars')
 
-    def __init__(self, test, body, local_vars=()):
+    def __init__(self, test, body, local_vars=(), scope = None):
 
         if PyccelAstNode.stage == 'semantic':
             if test.dtype is not NativeBool():
@@ -950,7 +954,7 @@ class While(ScopedNode):
         self._test = test
         self._body = body
         self._local_vars = local_vars
-        super().__init__()
+        super().__init__(scope)
 
     @property
     def test(self):
@@ -1629,6 +1633,8 @@ class For(ScopedNode):
         iterable object. for the moment only Range is used
     body : list of pyccel objects
         list of statements representing the body of the For statement.
+    scope : Scope
+        The scope for the loop
 
     Examples
     --------
@@ -1649,6 +1655,7 @@ class For(ScopedNode):
         iter_obj,
         body,
         local_vars = (),
+        scope = None
         ):
         if PyccelAstNode.stage != "syntactic":
             if not isinstance(iter_obj, Iterable):
