@@ -2287,7 +2287,8 @@ class FunctionDef(ScopedNode):
         arguments_inout=(),
         functions=(),
         interfaces=(),
-        doc_string=None):
+        doc_string=None,
+        scope=None):
 
         if isinstance(name, str):
             name = PyccelSymbol(name)
@@ -2397,7 +2398,7 @@ class FunctionDef(ScopedNode):
         self._functions       = functions
         self._interfaces      = interfaces
         self._doc_string      = doc_string
-        super().__init__()
+        super().__init__(scope)
 
     @property
     def name(self):
