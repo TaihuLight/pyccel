@@ -266,7 +266,7 @@ class Scope(object):
             self._used_symbols.add(name)
 
     def get_collision_free_name(self, name):
-        """
+        """ Provides a valid name for use in the code, from a suggested name
         """
         if name == '_':
             name,_ = create_incremented_string(self._used_symbols, prefix = 'dummy')
