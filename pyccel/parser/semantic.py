@@ -2490,20 +2490,21 @@ class SemanticParser(BasicParser):
         iterator_d_var = self._infere_type(start)
 
         if iterable.num_loop_counters_required:
-            indices = [self._assign_lhs_variable(iterator, iterator_d_var,
+            names = [self.namespace.get_collision_free_name('idx') \
+                        for i in range(iterable.num_loop_counters_required)]
+            indices = [self._assign_lhs_variable(n, iterator_d_var.copy(),
                                 rhs=start, new_expressions=new_expr,
                                 is_augassign=False, **settings) \
-                        for i in range(iterable.num_loop_counters_required)]
+                        for n in names]
             iterable.set_loop_counter(*indices)
         else:
-            if isinstance(iterable.iterable, PythonEnumerate):
-                iterator = iterator[0]
-            index = self.check_for_variable(iterator)
+            iterator_index = iterator[0] if isinstance(iterable.iterable, PythonEnumerate) \
+                                else iterator
+            index = self.check_for_variable(iterator_index)
             if index is None:
-                index = self._assign_lhs_variable(iterator, iterator_d_var,
+                index = self._assign_lhs_variable(iterator_index, iterator_d_var,
                                 rhs=start, new_expressions=new_expr,
                                 is_augassign=False, **settings)
-                self.namespace.insert_variable(index)
             iterable.set_loop_counter(index)
 
         if isinstance(iterator, PyccelSymbol):

@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from pyccel.ast.core import create_incremented_string
+from pyccel.ast.internals import PyccelSymbol
 from pyccel.ast.variable import Variable
 
 
@@ -272,6 +273,7 @@ class Scope(object):
             name,_ = create_incremented_string(self._used_symbols, prefix = 'dummy')
         #TODO: If case-sensitive check for collision
         #TODO: Check language-specific rules to generate new name if necessary (e.g. underscores, 
+        name = PyccelSymbol(name)
         return name
 
     def get_unused_temporary(self, dtype, precision = -1, *, rank, shape = ()):
