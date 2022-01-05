@@ -332,7 +332,7 @@ def omp_taskloop(n):
     result = 0
     #$omp parallel num_threads(n)
     #$omp taskloop
-    for i in range(0, 10): # pylint: disable=unused-variable
+    for _ in range(0, 10):
         #$omp atomic
         result = result + 1
     #$omp end parallel
